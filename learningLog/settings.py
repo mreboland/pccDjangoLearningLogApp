@@ -30,13 +30,48 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+
+# Activating Models
+# To use our models, we have to tell django to include our app in the overall project.
+# It's important to place our own apps before the default apps in case we need to override any behaviour of the default apps with our own, custom behaviour.
+
+# Next we need to tell django to modify the database so it can store info related to the model 'Topic'. From the terminal run:
+
+# (ll_env)learning_log$ python manage.py makemigrations learningLogs
+# Migrations for 'learning_logs':
+# learning_logs/migrations/0001_initial.py
+# - Create model Topic
+# (ll_env)learning_log$
+
+# makemigrations tells django to figure out how to modify the database so it can store the data associated with any new models we've define. The output here shows that Django has created a
+# migration file called 0001_initial.py. This migration will create a table for the model Topic
+# in the database.
+# Now we’ll apply this migration and have Django modify the database for us:
+
+# (ll_env)learning_log$ python manage.py migrate
+# Operations to perform:
+# Apply all migrations: admin, auth, contenttypes, learning_logs, sessions
+# Running migrations:
+# Applying learning_logs.0001_initial... OK
+
+# Most of the output from this command is identical to the first time we issued the migrate command.
+# The line we need to check appears at the end, where Django confirms that the migration for
+# learning_logs worked OK. Whenever we want to modify the data that Learning Log manages, we’ll
+# follow these three steps: modify models.py, call makemigrations on learning_logs, and tell Django to migrate the project.
+
+
 INSTALLED_APPS = [
+    # My apps
+    "learningLogs",
+    
+    # Default django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
 ]
 
 MIDDLEWARE = [

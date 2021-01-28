@@ -59,6 +59,13 @@ ALLOWED_HOSTS = []
 # learning_logs worked OK. Whenever we want to modify the data that Learning Log manages, we’ll
 # follow these three steps: modify models.py, call makemigrations on learning_logs, and tell Django to migrate the project.
 
+# The django admin site
+
+# Setting up superuser
+# python manage.py createsuperuser
+# Follow the prompts to set up a admin user for our site.
+
+
 
 INSTALLED_APPS = [
     # My apps

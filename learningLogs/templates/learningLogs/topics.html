@@ -23,5 +23,7 @@
         <!-- Unlike python that uses indentation to indicate which lines a for statement loop is a part of, we need to specify endfor to stop the loop -->
         {% endfor %}
     </ul>
+    {% comment %} We place the link after the list of existing topics {% endcomment %}
+    <a href="{% url 'learningLogs:newTopic' %}">Add a new topic</a>
 
 {% endblock content %}

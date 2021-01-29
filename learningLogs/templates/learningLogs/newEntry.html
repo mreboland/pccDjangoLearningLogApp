@@ -1,0 +1,18 @@
+{% extends "learningLogs/base.html" %}
+
+{% block content %}
+
+    {% comment %} We show the topic at the top of the page so the user can see which topic they're adding an entry to. The topic also acts as a link back to the main page for that topic {% endcomment %}
+    <p><a href="{% url 'learningLogs:topic' topic.id %}">{{ topic }}</a></p>
+
+    <p>Add a new entry:</p>
+    {% comment %} The form's action argument includes the topic_id value in the URL, so the view function can ssociate the new entry with the correct topic. {% endcomment %}
+    <form action="{% url 'learningLogs:newEntry' topic.id %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="submit">Add entry</button>
+    </form>
+
+{% comment %} Off to topic.html to link to the newEntry page {% endcomment %}
+
+{% endblock content %}

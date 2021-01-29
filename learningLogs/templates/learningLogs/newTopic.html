@@ -1,0 +1,18 @@
+{% extends "learningLogs/base.html" %}
+
+{% block content %}
+
+    <p>Add a new topic:</p>
+    {% comment %} We define an HTML form. The action argument tells the browser where to send the data submitted in the form. In this case, we send it back to the view function newTopic(). The method argument tells the browser to submit the data as a POST request{% endcomment %}
+    <form action="{% url 'learningLogs:newTopic' %}" method="post">
+        {% comment %} The template tag below is used by django to prevent attackers from using the form to gain unauthorized access to the server. {% endcomment %}
+        {% csrf_token %}
+        {% comment %} Here we display the form. Django makes it simple by only needed us to include the template variable for django to create all the necessary fields. The as_p` modifier tells django to render all the form elements in paragraph format.{% endcomment %}
+        {{ form.as_p }}
+        {% comment %} Django doesn't create a submit button for forms so we need to.{% endcomment %}
+        <button name="submit">Add topic</button>
+    </form>
+
+    {% comment %} On to topics.html to link newtopic to topics {% endcomment %}
+
+{% endblock content %}

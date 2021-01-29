@@ -37,7 +37,15 @@ urlpatterns = [
     
     # First part of string tells django to for URLs that have the word topics after the base url.
     # Second part, the int part, matches an integer between two forward slashes and store the integer value in an argument called topicId. We'll use the value of topicId to get the correct topic inside the function
-    path("topics/<int:topic_id>/", views.topic, name="topic")
+    path("topics/<int:topic_id>/", views.topic, name="topic"),
+    
+    # Page for adding a new topic
+    path("newTopic/", views.newTopic, name="newTopic"),
+    # On to views.py
+    
+    # Page for adding a new entry
+    path("newEntry/<int:topic_id>/", views.newEntry, name="newEntry"),
+    # On to views.py
 ]
 
-# On to views.py
+

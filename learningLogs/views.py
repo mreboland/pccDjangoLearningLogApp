@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from .models import Topic
+from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
 
 # Writing a view
@@ -124,4 +124,38 @@ def newEntry(request, topic_id):
         "topic": topic,
         "form": form
     }
-    return render(request, "learningLogs/newEntry", context)
+    return render(request, "learningLogs/newEntry.html", context)
+
+
+# The editEntry function
+# We start by import the class Entry from the models.py
+
+def editEntry(request, entry_id):
+    """Edit an existing entry"""
+    
+    # Here we get the entr object that the user wants to edit and the topic associated with the entry.
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+    
+    if request.method != "POST":
+        # Initial request; pre-fill form with the current entry
+        
+        # The instance=entry argument tells django to create the form prefilled with info from the existing entry object. The user will see their existing data and be able to edit that data
+        form = EntryForm(instance=entry)
+    else:
+        # POST data submitted; process data
+        
+        # When processing a POST request, we pass the instance=entry argument and the data = request.POST argument. These arguments tell django to create a form instance based on the info associated with the existing entry object, updated with any relevant data from request.POST.
+        form = EntryForm(instance=entry, data=request.POST)
+        if form.is_valid():
+            # We save immediately here because the entry is already associate with the correct topic
+            form.save()
+            # We redirect to the topic page, where the user should see the updated version of the entry they edited.
+            return redirect("learningLogs:topic", topic_id=topic.id)
+    
+    context = {
+        "entry": entry,
+        "topic": topic,
+        "form": form
+    }
+    return render(request, "learningLogs/editEntry.html", context)

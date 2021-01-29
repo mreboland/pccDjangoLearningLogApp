@@ -46,6 +46,10 @@ urlpatterns = [
     # Page for adding a new entry
     path("newEntry/<int:topic_id>/", views.newEntry, name="newEntry"),
     # On to views.py
+    
+    # Page for editing an entry
+    path("editEntry/<int:entry_id>/", views.editEntry, name="editEntry"),
+    # On to views.py
 ]
 
 

@@ -9,6 +9,7 @@
     <p>Entries:</p>
     <p>
         <a href="{% url 'learningLogs:newEntry' topic.id %}">Add new entry</a>
+        {% comment %} On to urls.py to edit entries {% endcomment %}
     </p>
     <ul>
     {% for entry in entries %}
@@ -19,6 +20,9 @@
             <!-- Displaying the full value of 'text' rather than just the first 50 characters from entry --> 
             <!-- The filter linebreaks ensures that long text entries include line breaks in a format understoof by browsers rather than showing a block on uninterrupted text -->
             <p>{{ entry.text|linebreaks }} </p>
+            <p>
+                <a href="{% url 'learningLogs:editEntry' entry.id %}">Edit entry</a>
+            </p>
         </li>
     <!-- We use the empty template again to print a msg to the user when no entries have been made -->
     {% empty %}

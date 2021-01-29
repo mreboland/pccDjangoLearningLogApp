@@ -29,7 +29,7 @@ class EntryForm(forms.ModelForm):
         # Everything is the same below as TopicForm
         model = Entry
         fields = ["text"]
-        labels = {"text": "Entry:"}
+        labels = {"text": ""}
         # A widget attribute is an HTML form element, such as a single-line text box, multi-line text area, or drop-down list.
         # By including the widgets attribute, we can override django's default widget choices. By telling django to use a forms.Textarea element, we're customizing the input widget for the first 'text' so the text area will be 80 columns wide instead of the default 40.
         widgets = {"text": forms.Textarea(attrs={"cols": 80})}

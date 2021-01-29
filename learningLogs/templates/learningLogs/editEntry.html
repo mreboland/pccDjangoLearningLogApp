@@ -1,0 +1,16 @@
+{% extends "learningLogs/base.html" %}
+
+{% block content %}
+    <p><a href="{% url 'learningLogs:topic' topic.id %}">{{ topic }}</a></p>
+
+    <p>Edit entry:</p>
+
+    {% comment %} The action argument send the form back to the editEntry() function for processing. We include the entry ID as an argument in the url tag, so the view function can modify the correct entry object. {% endcomment %}
+    <form action="{% url 'learningLogs:editEntry' entry.id %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="submit">Save changes</button>
+    </form>
+    {% comment %} On to topic.html to link to this page {% endcomment %}
+
+{% endblock content %}

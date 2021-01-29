@@ -41,7 +41,7 @@ def topic(request, topic_id):
     entries = topic.entry_set.order_by("-dateAdded")
     # We store the topic and entries in the context dictionary and send context to the template topic.html
     context = {
-        "topics": topic, 
+        "topic": topic, 
         "entries": entries
         }
     return render(request, "learningLogs/topic.html", context)

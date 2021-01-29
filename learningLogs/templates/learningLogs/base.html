@@ -1,0 +1,37 @@
+<!-- Template inheritance -->
+<!-- When building a website, some elements will always need to be repeated on 
+each page. Rather than writing these elements directly into each page, you can 
+write a bse template containing the repeated elements and then have each page 
+inherit from the base. -->
+
+<!-- The parent template -->
+<!-- This file will contain elements common to all pages; every other template
+will inherit from base.html. The only element we want to repeat on each
+page right now is the title at the top. Because we’ll include this template on
+every page, let’s make the title a link to the home page -->
+
+
+<!-- The first part of this file creates a paragraph containing the name of
+the project, which also acts as a home page link. To generate a link, we use
+a template tag, which is indicated by braces and percent signs. A template
+tag generates information to be displayed on a page. Our template tag
+% url 'learningLogs:index' % generates a URL matching the URL pattern
+defined in learningLogs/urls.py with the name 'index' -->
+<!-- In this example, learning_logs is the namespace and index is a uniquely 
+named URL pattern in that namespace. The namespace comes from the value we assigned 
+to appName in the learningLogs/urls.py file. -->
+<!-- Having the template tag generate the URL for us makes it much easier
+to keep our links up to date. We only need to change the URL pattern in
+urls.py, and Django will automatically insert the updated URL the next time
+the page is requested. Every page in our project will inherit from base.html,
+so from now on, every page will have a link back to the home page. -->
+<p>
+    <a href="{% url "learningLogs:index" %}">Learning Log</a> -
+    <a href="{% url "learningLogs:topics" %}">Topics</a>
+</p>
+
+<!-- The below are called block tags. This block, names content, is a placeholder. The child template will define the kind of info that goes in the content block. -->
+<!-- A child template doesn't have to define every block from its parent, so you can reserve space in parent templates for as many blocks as you like. The child template uses only as many as it requires -->
+{% block content %}{% endblock content %}
+
+<!-- On to index.html to update the child template -->

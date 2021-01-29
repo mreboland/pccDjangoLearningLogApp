@@ -1,0 +1,26 @@
+<!-- We extend base.html as we do for all pages in the project -->
+{% extends "learningLogs/base.html" %}
+
+{% block content %}
+
+    <!-- Showing the topic that's currently being displayed which is stored in the template variable topic. The variable topic is available because it's included in the context dictionary -->
+    <p>Topic: {{ topic }}</p>
+
+    <p>Entries:</p>
+    <ul>
+    {% for entry in entries %}
+        <li>
+            <!-- We display the value of the attribute dateAdded. The vertical line represents a template filter, a function that modifies the value in a template variable. -->
+            <!-- The filter date show jan 1, 20xx xx:xx -->
+            <p>{{ entry.dateAdded|date:"M d, Y H:i" }}</p>
+            <!-- Displaying the full value of 'text' rather than just the first 50 characters from entry --> 
+            <!-- The filter linebreaks ensures that long text entries include line breaks in a format understoof by browsers rather than showing a block on uninterrupted text -->
+            <p>{{ entry.text|linebreaks }} </p>
+        </li>
+    <!-- We use the empty template again to print a msg to the user when no entries have been made -->
+    {% empty %}
+        <li>There are no entries for this topic yet.</li>
+    {% endfor %}
+    </ul>
+
+{% endblock content %}

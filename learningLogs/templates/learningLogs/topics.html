@@ -1,0 +1,27 @@
+<!-- % comment % The topics template % endcomment %
+% comment % 
+    The template for the topics page receives the context dictionary, so the template can use the data that topics provides.
+% endcomment % -->
+
+
+<!-- We use the extends tag to inherit from base.html, just as the index template does, after which we open a content block. -->
+{% extends "learningLogs/base.html" %}
+
+{% block content %}
+
+    <p>Topics</p>
+
+    <ul>
+        <!-- The template tag below allows us to write a for loop which will loop through the list topics from the context dictionary -->
+        {% for topic in topics %}
+            <li>
+                <a href="{% url 'learningLogs:topic' topic.id %}">{{ topic }}</a>
+            </li>
+        <!-- The empty tag tells python what to do if there are no items in the list. In our case we print a message informing the user that no topics have been added yet -->
+        {% empty %}
+            <li>No topics have been added yet.</li>
+        <!-- Unlike python that uses indentation to indicate which lines a for statement loop is a part of, we need to specify endfor to stop the loop -->
+        {% endfor %}
+    </ul>
+
+{% endblock content %}

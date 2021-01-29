@@ -9,7 +9,8 @@ from django.urls import path
 from . import views
 
 # The variable appName helps django distinguish this urls.py file from files of the same name in other apps within the project.
-appName = "learningLogs"
+# app_name is specific code and can't be title cased
+app_name = "learningLogs"
 # The variable urlpatterns in this module is a list of individual pages that can requested from the learningLogs app.
 urlpatterns = [
     # Home page
@@ -30,6 +31,13 @@ urlpatterns = [
     # want to provide a link to the home page, we’ll use this name instead of writing
     # out a URL.
     path("", views.index, name="index"),
+    # Page that shows all topics
+    path("topics/", views.topics, name="topics"),
+    # Detail page for a single topic
+    
+    # First part of string tells django to for URLs that have the word topics after the base url.
+    # Second part, the int part, matches an integer between two forward slashes and store the integer value in an argument called topicId. We'll use the value of topicId to get the correct topic inside the function
+    path("topics/<int:topic_id>/", views.topics, name="topic")
 ]
 
 # On to views.py

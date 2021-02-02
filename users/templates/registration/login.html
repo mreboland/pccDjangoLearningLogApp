@@ -1,0 +1,26 @@
+{% extends "learningLogs/base.html" %}
+{% comment %} When the user requests the login page, Django will use a default view
+function, but we still need to provide a template for the page. The default authentication views look for templates inside a folder called registration, so we’ll need to make that folder. {% endcomment %}
+
+{% comment %} We extend the base.html to ensure that the login page has the same look and feel as the rest of the site. {% endcomment %}
+
+{% block content %}
+
+    {% comment %} If the form's 'errors' attribute is set, we display an error message. {% endcomment %}
+    {% if form.errors %}
+        <p>Your username and password didn't match, Please try again.</p>
+    {% endif %}
+
+    {% comment %} We want the login view to process the form, so we set the 'action' argument as the URL of the login page {% endcomment %}
+    <form method="post" action="{% url "users:login" %}">
+        {% csrf_token %}
+        {% comment %} The login view send a form to the template, and it's up to us to display the form {% endcomment %}
+        {{ form.as_p }}
+
+        {% comment %} Add a submit button to senf the form {% endcomment %}
+        <button name="submit">Log in</button>
+        {% comment %} We include a hidden form element, 'next'. The 'value' argument tells django where to redirect the user after they've logged in successfully. In this case, back to the home page {% endcomment %}
+        <input type="hidden" name="next" value="{% url "learningLogs:index" %}" />   
+    </form>
+
+{% endblock content %}

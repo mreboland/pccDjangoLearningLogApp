@@ -31,6 +31,10 @@ from django.urls import path, include
 urlpatterns = [
     # The below includes the module admin.site.urls, which defines all the URLs that can be requested from the admin site.
     path('admin/', admin.site.urls),
+    
+    # Including users app
+    path("users/", include("users.urls")),
+    
     # To include the URLs for learningLogs. Make sure to import 'include'.
     path("", include("learningLogs.urls"))
 ]

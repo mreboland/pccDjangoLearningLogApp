@@ -27,7 +27,24 @@ the page is requested. Every page in our project will inherit from base.html,
 so from now on, every page will have a link back to the home page. -->
 <p>
     <a href="{% url "learningLogs:index" %}">Learning Log</a> -
-    <a href="{% url "learningLogs:topics" %}">Topics</a>
+    <a href="{% url "learningLogs:topics" %}">Topics</a> -
+    {% comment %} Addding a login link that only shows if user isn't logged in {% endcomment %}
+
+    {% comment %} In Django’s authentication system, every template has a user variable
+    available, which always has an is_authenticated attribute set: the attribute is
+    True if the user is logged in and False if they aren’t. {% endcomment %}
+
+    {% comment %} Here we display a greeting if the user is logged in. Authenticated users have an additional 'username' attribute set, which we use to personalize the greeting and remind the user they're logged in. {% endcomment %}
+    {% if user.is_authenticated %}
+        Hello, {{ user.username }}.
+        {% comment %} Log out button under user auth portion so only they can see it {% endcomment %}
+        <a href="{% url 'users:logout' %}">Log out</a>
+    {% else %}
+        {% comment %} Link to registration page {% endcomment %}
+        <a href="{% url 'users:register' %}">Register</a> -
+        {% comment %} Here we display a link to the login page for uesrs who haven't been authenticated {% endcomment %}
+        <a href="{% url 'users:login' %}">Log in</a>
+    {% endif %}
 </p>
 
 <!-- The below are called block tags. This block, names content, is a placeholder. The child template will define the kind of info that goes in the content block. -->

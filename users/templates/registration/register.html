@@ -1,0 +1,14 @@
+{% extends "learningLogs/base.html" %}
+
+{% block content %}
+
+    <form method="post" action="{% url 'users:register' %}">
+        {% csrf_token %}
+        {% comment %} We use the as_p method again so django will display all the fields in the form appropriately, including any error messages if the form isn't filled out correctly. {% endcomment %}
+        {{ form.as_p }}
+
+        <button name="submit">Register</button>
+        <input type="hidden" name="next" value="{% url 'learningLogs:index' %}" />
+    </form>
+
+{% endblock content %}

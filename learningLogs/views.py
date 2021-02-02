@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 # Django makes it easy to restrict access to certain pages to logged-in users through the @login_required decorator. A decorator is a directive placed just before a function definition that python applies to the function before it runs, to alter how the function code behaves.
 from django.contrib.auth.decorators import login_required
+# A 404 response is a standard error response that's returned when a requested resource doesn't exist on a server. We import Http404 which we'll raise if the user requests a topic they shoudn't see.
+from django.http import Http404
 
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
@@ -37,8 +39,10 @@ def topics(request):
     """Show all topics"""
     
     # We query the database by asking for the Topic objects, sorted by the dateAdded attribute. We store the resulting queryset in topics var.
-    topics = Topic.objects.order_by("dateAdded")
-    # We define a context that we'll send to the template. A context is a dictionary in qhich the keys are names we'll use in the template to access the data, and the values are the data we need to send to the template.
+    # Currently if we're logged in, we'll be able to see all the topics, no matter which user we're logged in as. We need to update topics below to only show the topics that belong to them.
+    # When a user is logged in, the request object has a request.user attribute set that stores info about the user. The query Topic.objects.filter... tells django to retrive only the Topic objects from the database whose owner attribute matches the current user. Because we're not changing how the topics are displayed, we don't need to change the template for the topics page at all.
+    topics = Topic.objects.filter(owner=request.user).order_by("dateAdded")
+    # We define a context that we'll send to the template. A context is a dictionary in which the keys are names we'll use in the template to access the data, and the values are the data we need to send to the template.
     context = {"topics": topics}
     # When building a page that uses data, we pass the context variable to render() as well as the request object and the path to the template
     return render(request, "learningLogs/topics.html", context)
@@ -53,6 +57,11 @@ def topic(request, topic_id):
     # We use get() to retrieve the topic, just as we did in the django shell.
     topic = Topic.objects.get(id=topic_id)
     # We get the entries associated with this topic, and we order them according to dateAdded. The minus sign sorts the results in reverse order, the most recent entries first.
+    
+    # Make sure the topic belongs to the current user.
+    # After receiving a topic request, we make sure the topic's user matches the currently logged in user before rendering the page. If the current user doesn't own the requested topic, we raise the Http404 exception and django returns a 404 error page.
+    if topic.owner != request.user:
+        raise Http404
     
     # of note, in lesson they have topic_set, the topic is the lower case of the second model (class Topic), the one that holds the topics themselves.
     entries = topic.entry_set.order_by("-dateAdded")

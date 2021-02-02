@@ -1,5 +1,6 @@
 from django.db import models
 
+# We import the User model from django.contrib... We then add an owner field to Topic, which establishes a foreign key relationship to the User model. If a user is deleted, all the topics associated with that user will be deleted as well.
 from django.contrib.auth.models import User
 
 # Defining models

@@ -96,8 +96,14 @@ def newTopic(request):
         # We can't save the submitted info in the db until we've checked that it is valid.
         # is_valid() checks that all fields types are filled in (by default all fields must be filled) and that the data entered matches the field types expected (i.e. 200 character limit of CharField)
         if form.is_valid():
+            # Currently our page for adding topics is broken because it doesn't associate a new topic with any particular user. It generates a NOT NULL error.
+            newTopic = form.save(commit=False)
+            newTopic.owner = request.user
+            newTopic.save()
+            
+            
             # If everything validates, we save the data to the db
-            form.save()
+            # form.save()
             # Now saved, we can leave the page so we redirect the user back to the topics page
             return redirect("learningLogs:topics")
         
@@ -163,6 +169,10 @@ def editEntry(request, entry_id):
     # Here we get the entr object that the user wants to edit and the topic associated with the entry.
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
+    
+    # The editEntry pages have URLs with the entry_id in the URL. This means someone could access it like the topic by doing editEntry/1
+    if topic.owner != request.user:
+        raise Http404
     
     if request.method != "POST":
         # Initial request; pre-fill form with the current entry

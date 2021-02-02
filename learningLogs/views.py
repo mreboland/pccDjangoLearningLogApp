@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+# Django makes it easy to restrict access to certain pages to logged-in users through the @login_required decorator. A decorator is a directive placed just before a function definition that python applies to the function before it runs, to alter how the function code behaves.
+from django.contrib.auth.decorators import login_required
 
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
@@ -20,6 +22,17 @@ def index(request):
 
 # We first need to import the model associated with the data we need at the top.
 # The topics() function needs one parameter, the request object django received from the server
+
+
+# We apply login_required() as a decorator to the topics() view function by prepending 
+# login_required with the @ symbol. As a result, Python knows to run the code in login_required()
+# before the code in topics(). 
+# The code in login_required() checks whether a user is logged in, and
+# Django runs the code in topics() only if they are. If the user isn’t logged in,
+# they’re redirected to the login page.
+# To make this redirect work, we need to modify settings.py so Django knows where to find the login page. Add LOGIN_URL = 'users:login' to the very end of settings.py
+# After adding the above to settings.py, when an unauthenticated user request a pages protected by the @login_required decorator, django will send the user to the URL defined by LOGIN_URL in settings.py
+@login_required
 def topics(request):
     """Show all topics"""
     
@@ -34,6 +47,7 @@ def topics(request):
 # The topic() function needs to get the topic and all associated entries from the database
 
 # This is the first view function that requires a param other than the request object. The function accepts the value captured by the expression /<int:topic_id>/ and stores it in topicId
+@login_required
 def topic(request, topic_id):
     """Show a single topic and all its entries"""
     # We use get() to retrieve the topic, just as we did in the django shell.
@@ -55,6 +69,7 @@ def topic(request, topic_id):
 
 # We use GET requests for pages that only read data from the server. We usually use POST requests 
 # when the user needs to submit information through a form.
+@login_required
 def newTopic(request):
     """Add a new topic"""
     
@@ -88,6 +103,9 @@ def newTopic(request):
 
 # We need to import our EntryForm at the top from forms.py
 # The definition of newEntry() has a topic_id param to store the value it receives from the URL
+
+
+@login_required
 def newEntry(request, topic_id):
     """Add a new entry for a particular topic"""
     
@@ -129,7 +147,7 @@ def newEntry(request, topic_id):
 
 # The editEntry function
 # We start by import the class Entry from the models.py
-
+@login_required
 def editEntry(request, entry_id):
     """Edit an existing entry"""
     

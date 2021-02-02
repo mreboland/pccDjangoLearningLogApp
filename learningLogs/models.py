@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.contrib.auth.models import User
+
 # Defining models
 # Each user will need to create a number of topics in their learning log. Each entry they make will be tied to a topic, and these entries will be displayed as text. We'll also need to store the timestamp of each entry, so we can show users when they made each entry.
 
@@ -18,6 +20,19 @@ class Topic(models.Model):
     # DateTimeField, and attribute, is a piece of data that will record a date and time.
     # auto_now_add=True tells django to automatically set this attribute to the current date and time whenever the user creates a new topic.
     dateAdded = models.DateTimeField(auto_now_add=True)
+
+
+    # We need to connect the data to the user who submitted it. We need to
+    # connect only the data highest in the hierarchy to a user, and the lower-level
+    # data will follow. For example, in Learning Log, topics are the highest level
+    # of data in the app, and all entries are connected to a topic. As long as each
+    # topic belongs to a specific user, we can trace the ownership of each entry in
+    # the database.
+    # We’ll modify the Topic model by adding a foreign key relationship to a
+    # user. We’ll then have to migrate the database. Finally, we’ll modify some of
+    # the views so they only show the data associated with the currently logged
+    # in user.
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     
     # Django calls a __str__() method to display a simple representation of a model. We've written a __str__() method that returns the string stored in the 'text' attribute
     def __str__(self):

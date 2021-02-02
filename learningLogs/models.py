@@ -42,7 +42,7 @@ class Entry(models.Model):
     """Something specific learned about a topic"""
     
     # Topic, a ForeignKey instance, is a database term. It's a reference to another record in the database. This is the code that connects each entry to a specific topic. Each topic is assigned a key, or ID, when it's created. When django needs to establish a connection between two pieces of data, it uses the key associated with each piece of info.
-    # The on_delete... argument tells django that when a topic is deleted, all the entries associated with thta topic should be deleted as well. This is known as a cascading delete.
+    # The on_delete... argument tells django that when a topic is deleted, all the entries associated with that topic should be deleted as well. This is known as a cascading delete.
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     # test, an instance of TextField, doesn't need a size limit because we don't want to limit the size of individual entries.
     text = models.TextField()

@@ -1,33 +1,74 @@
 <!-- We extend base.html as we do for all pages in the project -->
 {% extends "learningLogs/base.html" %}
 
+{% comment %} We place the topic in the page_header block {% endcomment %}
+{% block page_header %}
+    <h3>{{ topic }}</h3>
+{% endblock page_header %}
+
 {% block content %}
-
-    <!-- Showing the topic that's currently being displayed which is stored in the template variable topic. The variable topic is available because it's included in the context dictionary -->
-    <p>Topic: {{ topic }}</p>
-
-    <p>Entries:</p>
     <p>
         <a href="{% url 'learningLogs:newEntry' topic.id %}">Add new entry</a>
-        {% comment %} On to urls.py to edit entries {% endcomment %}
     </p>
+
+    {% for entry in entries %}
+        {% comment %} Previously we used ul to structure our topics. We changed it by giving each topic a div element with the selector 'card'. This card has two nested elements. One to to hold the timestamp and the link to edit the entry, and another to hold the body of the enty {% endcomment %}
+        <div class="card mb-3">
+            {% comment %} We created a header element with the selector card-header. This card header contains the date the entrywas made and a link to edit it. {% endcomment %}
+            <h4 class="card-header">
+                {{ entry.dateAdded|date:"M d, Y H:i" }}
+                {% comment %} The small tag makes it appear a little smaller than the timestamp {% endcomment %}
+                <small>
+                    <a href="{% url 'learningLogs:editEntry' entry.id %}">edit entry</a>
+                </small>
+            </h4>
+            {% comment %} The div with card-body places the text of the entry in a somple box on the card. {% endcomment %}
+            <div class="card-body">
+                {{ entry.text|linebreaks }}
+            </div>
+        </div>
+    {% empty %}
+        <p>There are no entries for this topic yet.</p>
+    {% endfor %}
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+{% comment %} {% block content %} {% endcomment %}
+
+    <!-- Showing the topic that's currently being displayed which is stored in the template variable topic. The variable topic is available because it's included in the context dictionary -->
+    {% comment %} <p>Topic: {{ topic }}</p> {% endcomment %}
+
+    {% comment %} <p>Entries:</p> {% endcomment %}
+    {% comment %} <p> {% endcomment %}
+        {% comment %} <a href="{% url 'learningLogs:newEntry' topic.id %}">Add new entry</a> {% endcomment %}
+        {% comment %} On to urls.py to edit entries {% endcomment %}
+    {% comment %} </p>
     <ul>
     {% for entry in entries %}
-        <li>
+        <li> {% endcomment %}
             <!-- We display the value of the attribute dateAdded. The vertical line represents a template filter, a function that modifies the value in a template variable. -->
             <!-- The filter date show jan 1, 20xx xx:xx -->
-            <p>{{ entry.dateAdded|date:"M d, Y H:i" }}</p>
+            {% comment %} <p>{{ entry.dateAdded|date:"M d, Y H:i" }}</p> {% endcomment %}
             <!-- Displaying the full value of 'text' rather than just the first 50 characters from entry --> 
             <!-- The filter linebreaks ensures that long text entries include line breaks in a format understoof by browsers rather than showing a block on uninterrupted text -->
-            <p>{{ entry.text|linebreaks }} </p>
+            {% comment %} <p>{{ entry.text|linebreaks }} </p>
             <p>
                 <a href="{% url 'learningLogs:editEntry' entry.id %}">Edit entry</a>
             </p>
-        </li>
+        </li> {% endcomment %}
     <!-- We use the empty template again to print a msg to the user when no entries have been made -->
-    {% empty %}
+    {% comment %} {% empty %}
         <li>There are no entries for this topic yet.</li>
     {% endfor %}
-    </ul>
+    </ul> {% endcomment %}
 
-{% endblock content %}
+{% comment %} {% endblock content %} {% endcomment %}

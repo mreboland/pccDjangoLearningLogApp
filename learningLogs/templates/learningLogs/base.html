@@ -1,3 +1,82 @@
+{% load bootstrap4 %}
+{% comment %} Above we load the collection of template tags available in django-bootstrap4 {% endcomment %}
+
+{% comment %} Below we are decalring this file as an HTML document written in english {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+{% comment %} The head of an HTML file doesn't contain any content, it just tells the browser what it needs to know to display the page correctly. {% endcomment %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% comment %} Here we add a title to name the page when we load the page in our browser (shows in tab, or title bar) {% endcomment %}
+    <title>Learning Log</title>
+
+    {% comment %} Here we are using one of bootstrap4's custom tamplate tags which tells django to include all the bootstrap style files. The tag that follows enables all the intereactive behaviour you might use on a page, such as collapsible navigation bars. {% endcomment %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery="full" %}
+</head>
+<!-- Body tag contains the content users will see on page -->
+<body>
+    <!-- nav tag indicates the page's navigation links section -->
+    <!-- Everything within the tags is styled according to the bootstrap style rules defined by the selectors navbar, navbar-expand-md, etc. A selector determines which elements on a page a certain style rule applies to. -->
+    <!-- mb is margin bottom -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
+        <!-- Create a link to our homepage which will appear on every page. -->
+        <a href="{% url 'learningLogs:index' %}" class="navbar-brand">Learning Log</a>
+
+        <!-- Here we are defining a button that appears if the browser window is too narrow to display the whole navigation bar horizontally. When the user clocks the buttom, the navigation elements will appear in a drop-down list. The collapse reference causes the navigation bar to collapse when the user shrinks the browser window or when the site is displayed on mobile devices with small screens. -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Opening a new section of the navbar using a div. This is the beginning of the part of the navbar that will be collapsed on narrow screens and windows. -->
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <!-- We define a new set of links. Bootstrap defines navigation elements
+            as items in an unordered list with style rules that make it look nothing
+            like a list. -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a href="{% url 'learningLogs:topics' %}" class="nav-link">Topics</a>
+                </li>
+            </ul>
+            <!-- Beginning a new set of links by using another ul tag. -->
+            <!-- ml-auto is short for margin-left-automatic. This pushes the links to the right side of the screen -->
+            <ul class="navbar-nav ml-auto">
+                <!-- We create an if block to display the links conditionally, based on whether the user is logged in or not. -->
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <!-- The span element styles pieces of text, or elements of a page that are part of a longer line -->
+                    <span class="navbar-text">Hello, {{ user.username }}.</span>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'users:logout' %}" class="nav-link">Log out</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'users:register' %}" class="nav-link">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'users:login' %}" class="nav-link">Log in</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <!-- Main tag it used for the most significant part of the body of a page -->
+    <!-- Container is a bootstrap way to group elements on a page. -->
+    <main class="container" role="main">
+        <!-- pb is padding bottom, mb is margin bottom -->
+        <div class="pb-2 mb-2 border-bottom">
+            <!-- The page header block will be used to title most of our pages -->
+            {% block page_header %}{% endblock page_header %}
+        </div>
+        <div>
+            {% block content %}{% endblock content %}
+        </div>
+    </main>
+    
+</body>
+</html>
+
 <!-- Template inheritance -->
 <!-- When building a website, some elements will always need to be repeated on 
 each page. Rather than writing these elements directly into each page, you can 
@@ -25,9 +104,9 @@ to keep our links up to date. We only need to change the URL pattern in
 urls.py, and Django will automatically insert the updated URL the next time
 the page is requested. Every page in our project will inherit from base.html,
 so from now on, every page will have a link back to the home page. -->
-<p>
-    <a href="{% url "learningLogs:index" %}">Learning Log</a> -
-    <a href="{% url "learningLogs:topics" %}">Topics</a> -
+{% comment %} <p> {% endcomment %}
+    {% comment %} <a href="{% url "learningLogs:index" %}">Learning Log</a> - {% endcomment %}
+    {% comment %} <a href="{% url "learningLogs:topics" %}">Topics</a> - {% endcomment %}
     {% comment %} Addding a login link that only shows if user isn't logged in {% endcomment %}
 
     {% comment %} In Django’s authentication system, every template has a user variable
@@ -35,20 +114,20 @@ so from now on, every page will have a link back to the home page. -->
     True if the user is logged in and False if they aren’t. {% endcomment %}
 
     {% comment %} Here we display a greeting if the user is logged in. Authenticated users have an additional 'username' attribute set, which we use to personalize the greeting and remind the user they're logged in. {% endcomment %}
-    {% if user.is_authenticated %}
-        Hello, {{ user.username }}.
+    {% comment %} {% if user.is_authenticated %} {% endcomment %}
+        {% comment %} Hello, {{ user.username }}. {% endcomment %}
         {% comment %} Log out button under user auth portion so only they can see it {% endcomment %}
-        <a href="{% url 'users:logout' %}">Log out</a>
-    {% else %}
+        {% comment %} <a href="{% url 'users:logout' %}">Log out</a> {% endcomment %}
+    {% comment %} {% else %} {% endcomment %}
         {% comment %} Link to registration page {% endcomment %}
-        <a href="{% url 'users:register' %}">Register</a> -
+        {% comment %} <a href="{% url 'users:register' %}">Register</a> - {% endcomment %}
         {% comment %} Here we display a link to the login page for uesrs who haven't been authenticated {% endcomment %}
-        <a href="{% url 'users:login' %}">Log in</a>
-    {% endif %}
-</p>
+        {% comment %} <a href="{% url 'users:login' %}">Log in</a> {% endcomment %}
+    {% comment %} {% endif %} {% endcomment %}
+{% comment %} </p> {% endcomment %}
 
 <!-- The below are called block tags. This block, names content, is a placeholder. The child template will define the kind of info that goes in the content block. -->
 <!-- A child template doesn't have to define every block from its parent, so you can reserve space in parent templates for as many blocks as you like. The child template uses only as many as it requires -->
-{% block content %}{% endblock content %}
+{% comment %} {% block content %}{% endblock content %} {% endcomment %}
 
 <!-- On to index.html to update the child template -->

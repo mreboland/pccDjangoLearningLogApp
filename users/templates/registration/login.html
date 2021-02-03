@@ -1,26 +1,71 @@
 {% extends "learningLogs/base.html" %}
+{% comment %} Here we load bootstrap4 template tags into this template {% endcomment %}
+{% load bootstrap4 %}
+
+{% comment %} We define the page_header block which tells the user what the page is for {% endcomment %}
+{% comment %} we removed the if form.errors block from the template because bootstrap4 manages form errors automatically. {% endcomment %}
+{% block page_header %}
+    <h2>Log in to your account.</h2>
+{% endblock page_header %}
+
+{% block content %}
+    {% comment %} we add a class="form" attribute, and then we use the template tag
+    {% bootstrap_form %} when we display the form; this replaces the {{ form
+    .as_p }} tag we were using in Chapter 19. The {% booststrap_form %} template tag inserts Bootstrap style rules into the form’s individual elements as the form is rendered. {% endcomment %}
+    <form action="{% url 'users:login' %}" class="form" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% comment %} Here we open a bootstrap4 template tag which adds bootstrap styling to buttons {% endcomment %}
+        {% buttons %}
+            <button class="btn btn-primary" name="submit">Log in</button>
+        {% endbuttons %}
+
+        <input type="hidden" name="next" value="{% url 'learningLogs:index' %}" />
+    </form>
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {% comment %} When the user requests the login page, Django will use a default view
 function, but we still need to provide a template for the page. The default authentication views look for templates inside a folder called registration, so we’ll need to make that folder. {% endcomment %}
 
 {% comment %} We extend the base.html to ensure that the login page has the same look and feel as the rest of the site. {% endcomment %}
 
-{% block content %}
+{% comment %} {% block content %} {% endcomment %}
 
     {% comment %} If the form's 'errors' attribute is set, we display an error message. {% endcomment %}
-    {% if form.errors %}
-        <p>Your username and password didn't match, Please try again.</p>
-    {% endif %}
+    {% comment %} {% if form.errors %} {% endcomment %}
+        {% comment %} <p>Your username and password didn't match, Please try again.</p> {% endcomment %}
+    {% comment %} {% endif %} {% endcomment %}
 
     {% comment %} We want the login view to process the form, so we set the 'action' argument as the URL of the login page {% endcomment %}
-    <form method="post" action="{% url "users:login" %}">
-        {% csrf_token %}
+    {% comment %} <form method="post" action="{% url "users:login" %}"> {% endcomment %}
+        {% comment %} {% csrf_token %} {% endcomment %}
         {% comment %} The login view send a form to the template, and it's up to us to display the form {% endcomment %}
-        {{ form.as_p }}
+        {% comment %} {{ form.as_p }} {% endcomment %}
 
         {% comment %} Add a submit button to senf the form {% endcomment %}
-        <button name="submit">Log in</button>
+        {% comment %} <button name="submit">Log in</button> {% endcomment %}
         {% comment %} We include a hidden form element, 'next'. The 'value' argument tells django where to redirect the user after they've logged in successfully. In this case, back to the home page {% endcomment %}
-        <input type="hidden" name="next" value="{% url "learningLogs:index" %}" />   
-    </form>
+        {% comment %} <input type="hidden" name="next" value="{% url "learningLogs:index" %}" />   
+    </form> {% endcomment %}
 
-{% endblock content %}
+{% comment %} {% endblock content %} {% endcomment %}

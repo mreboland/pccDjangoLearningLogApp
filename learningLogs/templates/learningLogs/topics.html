@@ -7,7 +7,39 @@
 <!-- We use the extends tag to inherit from base.html, just as the index template does, after which we open a content block. -->
 {% extends "learningLogs/base.html" %}
 
+{% comment %} We don't need to load bootstrap4 tag because we are not using any custom bootstrap template tags in this file.{% endcomment %}
+
+{% comment %} We moved the heading Topics into the page_header block {% endcomment %}
+{% block page_header %}
+    <h1>Topics</h1>
+{% endblock page_header %}
+
 {% block content %}
+    <ul>
+        {% for topic in topics %}
+            <li>
+                {% comment %} We use h3 tages to make the topics a little larger on the page {% endcomment %}
+                <h3>
+                    <a href="{% url 'learningLogs:topic' topic.id %}">{{ topic }}</a>
+                </h3>
+            </li>
+        {% empty %}
+            <li>
+                <h3>No topics have been added yet.</h3>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h3>
+        <a href="{% url 'learningLogs:newTopic' %}">Add a new topic</a>
+    </h3>
+{% endblock content%}
+
+
+
+
+
+{% comment %} {% block content %}
 
     <p>Topics</p>
 
@@ -24,6 +56,6 @@
         {% endfor %}
     </ul>
     {% comment %} We place the link after the list of existing topics {% endcomment %}
-    <a href="{% url 'learningLogs:newTopic' %}">Add a new topic</a>
+    {% comment %} <a href="{% url 'learningLogs:newTopic' %}">Add a new topic</a> {% endcomment %}
 
-{% endblock content %}
+{% comment %} {% endblock content %} {% endcomment %}

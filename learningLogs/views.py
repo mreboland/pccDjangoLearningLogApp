@@ -97,8 +97,12 @@ def newTopic(request):
         # is_valid() checks that all fields types are filled in (by default all fields must be filled) and that the data entered matches the field types expected (i.e. 200 character limit of CharField)
         if form.is_valid():
             # Currently our page for adding topics is broken because it doesn't associate a new topic with any particular user. It generates a NOT NULL error.
+            
+            # We call form.save() with the commit=False argument because we need to modify the new topic before saving it to the db.
             newTopic = form.save(commit=False)
+            # We then set the new topic's owner attribute to the current user
             newTopic.owner = request.user
+            # Finally, we call save() on the topic instance we just defined.
             newTopic.save()
             
             
@@ -126,6 +130,8 @@ def newEntry(request, topic_id):
     
     # We'll need the topic to render the page and process the form's data, so we us topic_id to get the correct topic
     topic = Topic.objects.get(id=topic_id)
+    if topic.owner != request.user:
+        raise Http404
     
     # We check whether the request method is POST or GET. The if block executes if it's a GET request, and we create a blank instance of EntryForm.
     if request.method != "POST":
